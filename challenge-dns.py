@@ -21,6 +21,8 @@ def main():
         )
 
     action, fqdn, value = sys.argv[1:]
+    # Lego appends a dot at the end. DS reports it as invalid, so remove.
+    fqdn = fqdn.rstrip(".")
 
     if action == "present":
         present(client, fqdn, value)
