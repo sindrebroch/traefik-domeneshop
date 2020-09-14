@@ -34,12 +34,16 @@ def main():
 
 def present(c, fqdn, value):
     domain = get_domain(c, fqdn)
+    # Seems like DS appends the domain to the fqdn. This causes the challenge
+    # to fail, so better remove the domain from fqdn before creating the entry
+    fqdn = fqdn.strip(domain["domain"])
     record = { "host": fqdn, "ttl": 600, "type": "TXT", "data": value }
     c.create_record(domain["id"], record)
 
 
 def cleanup(c, fqdn, value):
     domain = get_domain(c, fqdn)
+    fqdn = fqdn.strip(domain["domain"])
     record = get_record(c, domain["id"], fqdn, value)
     c.delete_record(domain["id"], record["id"])
 
