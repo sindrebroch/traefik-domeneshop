@@ -1,4 +1,3 @@
-#FROM python:3.8.2-alpine3.11 as builder
 FROM traefik:2.2.1 as base
 
 FROM base as builder
@@ -12,9 +11,6 @@ RUN apk --no-cache upgrade \
     python3-dev \
     libffi-dev \
     openssl-dev 
-#    lz4-dev \
-#    acl-dev \
-#    linux-headers
 
 RUN pip3 install --upgrade pip \
     && pip3 install wheel \
@@ -32,5 +28,5 @@ RUN apk --no-cache upgrade \
     && rm -rf /var/cache/apk/* /wheels /root/.cache \
     && pip3 install domeneshop
 
-ENV EXEC_PATH=/challenge-dns.py
+ENV EXEC_PATH /challenge-dns.py
 
