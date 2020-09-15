@@ -1,12 +1,13 @@
 name: Docker Image CI
 
 on:
+  release:
+    types: [published]
   push:
-    branches: [ ci ]
-  pull_request:
-    branches: [ ci ]
-  tags: 
-    - v*
+    branches:
+      - ci
+    tags:
+      - v*
 
 env:
   IMAGE_NAME: kybber/traefik-domeneshop
@@ -17,18 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Build docker image
-        if: ${{ github.event_name != "tags" }}
-        run: docker build . --file Dockerfile
-
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Publish to registry
-        if: ${{ github.event_name == "tags" }}
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: $IMAGE_NAME
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          tag_semver: true
+        run: |
+          echo ${{ github.event_name}}
+          echo ${{ github.event}}
+          echo ${{ github.event_path}}
