@@ -29,21 +29,21 @@ def main():
     elif action == "cleanup":
         cleanup(client, fqdn, value)
     else:
-        raise ValueError('First argument must be "present" or "value"')
+        raise ValueError('First argument must be "present" or "cleanup"')
 
 
 def present(c, fqdn, value):
     domain = get_domain(c, fqdn)
     # Seems like DS appends the domain to the fqdn. This causes the challenge
     # to fail, so better remove the domain from fqdn before creating the entry
-    fqdn = fqdn.strip(domain["domain"])
+    fqdn = fqdn.replace(domain["domain"], "", 1).rstrip(".")
     record = { "host": fqdn, "ttl": 600, "type": "TXT", "data": value }
     c.create_record(domain["id"], record)
 
 
 def cleanup(c, fqdn, value):
     domain = get_domain(c, fqdn)
-    fqdn = fqdn.strip(domain["domain"])
+    fqdn = fqdn.replace(domain["domain"], "", 1).rstrip(".")
     record = get_record(c, domain["id"], fqdn, value)
     c.delete_record(domain["id"], record["id"])
 
