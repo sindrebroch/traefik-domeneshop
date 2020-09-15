@@ -1,21 +1,21 @@
-# traefik-domeneshop
-This docker image amends the official [traefik](https://hub.docker.com/_/traefik) 
-image to enable LetsEncrypt DNS-01 challenges for Domeneshop so that system such as 
-[this](https://www.smarthomebeginner.com/traefik-2-docker-tutorial) can be created 
-for Domeneshop customers without having to transfer name servers to e.f. CloudFlare.
+# Traefik-Domeneshop
 
-## Usage
-Clone the repo to your docker host and build image:
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/kybber/traefik-domeneshop)
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/kybber/traefik-domeneshop)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/kybber/traefik-domeneshop)
+![Docker Stars](https://img.shields.io/docker/stars/kybber/traefik-domeneshop)
+![Docker Pulls](https://img.shields.io/docker/pulls/kybber/traefik-domeneshop)
 
+This docker image amends the official [Traefik](https://hub.docker.com/_/traefik) image to enable LetsEncrypt [DNS challenges](https://docs.traefik.io/user-guides/docker-compose/acme-dns/) for [Domeneshop](https://domene.shop/) customers. 
+
+The challenge is performed by a Python script, which means that the dnsChallenge [provider](https://docs.traefik.io/v2.0/https/acme/#providers) must be set to `exec` ([External Program](https://go-acme.github.io/lego/dns/exec/)).
+
+## Usage:
+Obtain a token and secret from your [Domeneshop API keys page](https://domene.shop/admin?view=api) 
+and place them in the following environment variables:
 ```
-cd traefik-domeneshop
-docker build --tag traefik-ds .
+  DOMENESHOP_TOKEN
+  DOMENESHOP_SECRET
 ```
-
-Obtain a token and secret from [Domeneshop API keys page](https://domene.shop/admin?view=api). 
-
-Create a container with the new image according to e.g. 
-[these instructions](https://www.smarthomebeginner.com/traefik-2-docker-tutorial)
-and ensure the following environment variables are set:
-- DOMENESHOP_TOKEN
-- DOMENESHOP_SECRET
+Run the container like your would use the official [Traefik](https://hub.docker.com/_/traefik) image, but ensure that your Traefik configuration sets
+`certificatesResolvers.myresolver.acme.dnsChallenge.provider` to `exec`. If you have issues with timeouts, you can try to increase `certificatesResolvers.myresolver.acme.dnsChallenge.delayBeforeCheck` from its default value `0`.
