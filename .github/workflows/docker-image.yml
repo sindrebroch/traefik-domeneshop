@@ -4,21 +4,13 @@ on:
   release:
     types: [published]
   push:
-    branches:
-      - ci
+  pull_request:
 
 env:
   IMAGE_NAME: kybber/traefik-domeneshop
 
 jobs:
-  dumpinfo:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: "Dump basic info"
-        run: |
-          echo ${{ github.event_name }}
-          
+
   build:
     runs-on: ubuntu-latest
     if: github.event_name != 'release'
