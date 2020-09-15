@@ -19,7 +19,6 @@ RUN pip3 install --upgrade pip \
 FROM base
 
 COPY --from=builder /wheels /wheels
-COPY challenge-dns.py /
 
 RUN apk --no-cache upgrade \
     && apk --no-cache add python3 \
@@ -27,6 +26,8 @@ RUN apk --no-cache upgrade \
     && pip3 install -f /wheels cryptography \
     && rm -rf /var/cache/apk/* /wheels /root/.cache \
     && pip3 install domeneshop
+
+COPY challenge-dns.py /
 
 ENV EXEC_PATH /challenge-dns.py
 

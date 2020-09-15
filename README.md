@@ -17,5 +17,11 @@ and place them in the following environment variables:
   DOMENESHOP_TOKEN
   DOMENESHOP_SECRET
 ```
+The following optional environment variables can be defined to modify the polling interval and propagation timeout:
+```
+  EXEC_POLLING_INTERVAL
+  EXEC_PROPAGATION_TIMEOUT
+```
 Run the container like your would use the official [Traefik](https://hub.docker.com/_/traefik) image, but ensure that your Traefik configuration sets
-`certificatesResolvers.myresolver.acme.dnsChallenge.provider` to `exec`. If you have issues with timeouts, you can try to increase `certificatesResolvers.myresolver.acme.dnsChallenge.delayBeforeCheck` from its default value `0`.
+`certificatesResolvers.myresolver.acme.dnsChallenge.provider` to `exec`.
+
