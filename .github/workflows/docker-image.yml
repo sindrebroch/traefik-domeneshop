@@ -11,9 +11,17 @@ env:
   IMAGE_NAME: kybber/traefik-domeneshop
 
 jobs:
+  dumpinfo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: "Dump basic info"
+        run: |
+          echo ${{ github.event_name }}
+          
   build:
     runs-on: ubuntu-latest
-    if: github.event_name != "release"
+    if: github.event_name != 'release'
     steps:
       - uses: actions/checkout@master
       - name: Build docker image
@@ -21,7 +29,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.event_name == "release"
+    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@master
       - name: Get release version
@@ -33,4 +41,4 @@ jobs:
           name: $IMAGE_NAME
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "latest, ${{ env.RELEASE_VERSION }}
+          tags: "latest, ${{ env.RELEASE_VERSION }}"
