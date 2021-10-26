@@ -1,4 +1,4 @@
-FROM traefik:2.3.6 as base
+FROM traefik:2.4.9 as base
 
 FROM base as builder
 
